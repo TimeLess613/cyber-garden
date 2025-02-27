@@ -13,10 +13,24 @@ tags:
 > - 关联数据图：在关联数据图中，不同实体之间的关系以边的形式表示。例如，社交媒体中的朋友关系图可以表示为一个关联数据图，其中用户是节点，而他们之间的关系（朋友关系）是边。
 > - 数据库关系图：数据库中的表可以通过它们之间的外键关系来表示为数据图。每个表是一个节点，而外键关系是边。
 
+### type
+
+- **类型是 GraphQL 的核心概念**，用于定义 API 的数据结构。
+- GraphQL 主要有以下几种类型：
+	- **标量类型（Scalar Types）**：如 `Int`、`Float`、`String`、`Boolean`、`ID`。
+	- **对象类型（Object Types）**：**用户自定义的类型**，包含字段（Fields）。
+	- **枚举类型（Enum Types）**：类似于 `enum`，用于限定一组固定的值。
+	- **输入类型（Input Types）**：用于 `mutation` 传参，如 `input UserInput { name: String, age: Int }`。
+	- **接口（Interface）** 和 **联合类型（Union Types）**：用于实现多态。
+
+- **对象是类型的具体实例**，即 **类型定义了结构，而对象是具体的数据**（如查询数据时返回的响应）。
+
 
 ## 有用
 
 > https://graphql.org/learn/introspection/
+
+> [!note] **自省（Introspection）** 是 GraphQL 允许客户端查询 **API 本身的结构** 的能力。
 
 如果不知道有什么type可用：
 ```GraphQL
@@ -28,6 +42,9 @@ tags:
   }
 }
 ```
+- 这里的 `__schema` 是 GraphQL 内置的自省字段，返回 **整个 API 的 Schema 结构**。
+
+
 然后根据响应，单独查看特定type：
 ```GraphQL
 {

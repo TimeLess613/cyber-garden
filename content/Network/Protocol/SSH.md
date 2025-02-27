@@ -66,11 +66,15 @@ tags:
 
 ### 配置使用
 
+> [!note] 注意 `authorized_keys` 的权限配置为600。
+> `/etc/ssh/sshd_config` 如果没配置 `StrictModes yes`，则 644 也可能成功认证，但是不推荐。
+
 将客户端的公钥放入远程SRV的指定位置（`~/.ssh/authorized_keys`）
 
 #### 手动
 
-`$ cat ~/.ssh/id_rsa.pub | ssh user@host "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"`
+- 本地：`$ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"`
+- 远程：`$ cat ~/.ssh/id_rsa.pub | ssh user@host "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"`
 
 #### 自动
 
