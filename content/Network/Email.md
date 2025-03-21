@@ -84,15 +84,17 @@ MUA——MSA——MTA——MTA(边界网关)——MTA——MDA—（MailBox）�
 
 SMTP服务器地址——相当于信封。
 
-- 用户是看不到信封的 `MAIL FROM` 的——这是给SMTP服务器看的，用于SMTP服务器之间转发——**报头的 `From` 字段**
-- 容易伪造——所以有[[Email安全#SPF|SPF]]或[[Email安全#DKIM|DKIM]]等防御技术
+- 用户是看不到信封的 `MAIL FROM` 的，这个字段通常不会显示在邮件客户端中，而是在邮件服务器的日志或 `Return-Path` 头部中可见——这是给SMTP服务器看的，用于SMTP交互、服务器之间转发
+- **容易伪造——所以有[[Email安全#SPF|SPF]]或[[Email安全#DKIM|DKIM]]等防御技术**
 	- SPF：向对方DNS确认这个地址是否来自指定IP
 	- DKIM：验证公钥签名
-- 送信失败的话发回给这里，并发送non-delivery report (NDR)
+- 退信（Bounce Email）：送信失败的话发回给这里，并发送non-delivery report (NDR)
 
 ### From (Header From)
 
-邮件客户端（Mailer）上显示的发件人——相当于信件抬头，其实算是信件内容了——可随意伪造，所以才要验证。
+邮件客户端（Mailer）上显示的发件人——相当于信件抬头，其实算是信件内容了——**可随意伪造，所以才要验证**。
+
+- 报头的 `From` 字段
 
 ### Received：经由的MailSrv
 
@@ -108,7 +110,7 @@ SMTP服务器地址——相当于信封。
 ### Return-Path：发信失败时的返回地址
 
 - 一般，给Envelope From（即由 `MAIL FROM` 命令通知的发信人），不过也可以用Return-Path特别指定。
-- 优点：管理送信失败mail（弹回邮件，一直对不可送达的目的地发信的话，影响信誉）
+- 优点：管理送信失败mail（退信，一直对不可送达的目的地发信的话，影响信誉）
 
 ### Reply-To：（点击）回信的地址
 

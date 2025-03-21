@@ -4,13 +4,17 @@ tags:
 ---
 > Security Assertion Markup Language
 
-SAML是一种SSO标准。
+> https://book.hacktricks.wiki/en/pentesting-web/saml-attacks/saml-basics.html
 
+## 基础概念
+
+SAML是一种协议、SSO标准。具体实现/产品有：AzureAD（云）、[[SAML#ADFS]]（本地）等
 SAML协议的基石：公私密钥/公钥基盘，所以“服务提供商”都信任“身份提供商”。
-
-- SAML 断言是 XML 格式的数据包，包含有关用户身份和属性的信息。它是一个被签名的安全令牌（所以基石为公钥基盘），用于在不同系统之间传递认证和授权信息。
-
 主要用途有：实现云系统/WEB间的相互认证。
+
+SAML 断言：是 XML 格式的数据包，包含有关用户身份和属性的信息。它是一个被签名的安全令牌（所以基石为公钥基盘），用于在不同系统之间传递认证和授权信息。
+
+## 基本构成例子
 
 ![[Pasted image 20240908141120.png]]
 
@@ -59,11 +63,13 @@ SAML协议的基石：公私密钥/公钥基盘，所以“服务提供商”都
 
 ![[Pasted image 20240908142410.png]]
 
-### 对与个人
+> https://milestone-of-se.nesuke.com/sv-advanced/server-software/sso/
 
-SAML是针对公司等组织机构，而针对个人发展出了[[OAuth 2.0|OAuth]]和[[OpenID]]。
 
-- [https://milestone-of-se.nesuke.com/sv-advanced/server-software/sso/](https://milestone-of-se.nesuke.com/sv-advanced/server-software/sso/)
+### 对于个人
+
+SAML是针对公司等组织机构，而针对个人发展出了 [[OpenID Connect（OIDC）|OIDC]] 和 [[OAuth 2.0|OAuth]]。
+
 
 
 
@@ -73,3 +79,11 @@ SAML是针对公司等组织机构，而针对个人发展出了[[OAuth 2.0|OAut
 ### Hybrid Azure AD join
 
 指windows设备同时加入AD域（注册机器账号，使用Kerberos）和AAD（注册设备，使用SAML）。
+
+
+## ✅ **“授权”怎么处理？**
+
+- 在 **SAML 协议外** 由 **服务提供方（SP）** 自己决定：
+    - 比如：你是“IT部”，SP给你开权限
+    - 但这个权限分配 **跟SAML本身无关**
+- 企业里通常结合 **RBAC（基于角色的访问控制）** 来做

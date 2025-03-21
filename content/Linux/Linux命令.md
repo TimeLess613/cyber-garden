@@ -929,20 +929,21 @@ www-data@misdirection:/var/www/html/wordpress$ sudo -u brexit /bin/bash
 查看是否有sudo权限。
 
 - 会要求当前用户的密码
-- 但是，只要sudoers配置有任意一条`NOPASSWD`，那么就可以无密码执行`sudo -l`（有可能只显示配置了`NOPASSWD`的命令，未测试）
+- 但是，只要sudoers配置有任意一条 `NOPASSWD`，那么就可以无密码执行 `sudo -l`（有可能只显示配置了 `NOPASSWD` 的命令，未测试）
 
 #### 配置sudoers
 
-尽量别动 `/etc/sudoers` 文件，而是**往 `/etc/sudoers.d/` 里添加**。
-其格式为：`<用户名/%组名>   主机名=(可切换的用户:可切换的组) [NOPASSWD: ]ALL`
+- 推荐用命令 `visudo` 进行编辑
+- 可以不改 `/etc/sudoers` 文件，而是**往 `/etc/sudoers.d/` 里添加**（需要删掉includedir那行的注释）：`visudo -f /etc/sudoers.d/alice`
+- 编写格式为：`<用户名/%组名>   主机名=(可切换的用户:组) [NOPASSWD: ]ALL`
 
-**发现**
-
+**发现：**
 - 即使sudoers文件里配置了绝对路径，命令行依然可以用相对路径——只要参照$PATH后的绝对路径和sudoers文件里的一样就行
 
 **例子**
 ```bash
-testuser        ALL=(ALL:ALL) /bin/bash
+testuser        ALL=(ALL) /bin/bash
+testuser        ALL=(:ALL) /bin/bash
 %kali-trusted   ALL=(ALL:ALL) NOPASSWD: ALL
 ```
 
