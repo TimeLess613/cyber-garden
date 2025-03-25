@@ -12,9 +12,14 @@ tags:
 
 https://stackoverflow.com/questions/56305613/cant-add-user-to-docker-group
 
+> [!note] `exec bash -l` 走完整的 login 流程（加载 `/etc/profile`, `~/.bash_profile` 等）
+> 联系： `/etc/environment` 中定义的 `KEY=VALUE` 环境变量也能被应用。
+
+^52e30c
+
 ---
 
-Docker Engine：即Docker CE（Community Edition）。在某次更新后更名为此，区别于“Docker Desktop”。
+Docker Engine：即 Docker CE（Community Edition）。在某次更新后更名为此，区别于“Docker Desktop”。
 
 ## 安装
 

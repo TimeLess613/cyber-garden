@@ -9,25 +9,35 @@ tags:
 > - **Business Email Compromise (BEC)** → DMARC
 
 例子：
-> 如果银行没有实施 SPF/DKIM/DMARC，攻击者冒充该银行发送钓鱼邮件，而邮件可能会**通过收件服务器的检查并进入用户的收件箱**。用户则认为该电子邮件来自他们的银行。
+> 如果某银行没有实施 SPF/DKIM/DMARC，攻击者冒充该银行发送钓鱼邮件，而邮件可能会**通过收件服务器的检查并进入用户的收件箱**。用户则认为该电子邮件来自他们的银行。
 
 
-SPF/DKIM/DMARC 都算是用于验证发信人的正当性。
+SPF/DKIM/DMARC 都算是用于**验证发信人的正当性**。
 
 ## SPF
 
 > Sender Policy Framework
 
-算是一个授权/许可清单，指定谁可以代表我/域发送邮件。别人（收件方）可以来查看我的清单确认邮件的发件人是否有我的授权。
+算是一个授权/许可清单。
+指定谁（哪些IP）可以代表我（域名）发送邮件。
+别人（收件方）可以来查看发信人域名的清单确认发件人IP是否被授权。
 
 在DNS的[[DNS#TXT|TXT记录]]中定义。格式通常如下：
 ```
 v=spf1 ip4:123.123.123.123 ~all
 ```
+
 > Here's the command I usually run to fetch that:
 ```
 dig TXT example.com
 ```
+
+### SPF定义与认证结果
+
+- pass: `+all`
+- softfail: `~all`。（常用这个定义）
+- fail: `-all`
+- ……
 
 > [2. What's the difference between ~all, -all, ?all, and +all in an SPF record?](https://github.com/nicanorflavier/spf-dkim-dmarc-simplified?tab=readme-ov-file#faqs-with-spf-dkim-and-dmarc)
 
