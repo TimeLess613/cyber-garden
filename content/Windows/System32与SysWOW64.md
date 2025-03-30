@@ -2,22 +2,26 @@
 tags:
   - IT/Windows
 ---
+
+大多数 Windows 机器使用 64 位版本的 Windows 操作系统。
+然而，许多应用程序仍然是 32 位的。
+因此微软引入了 “Windows on Windows 64-bit”（WOW64）的概念，使 64 位版本的 Windows 能够以几乎不损失效率的方式运行 32 位应用程序。
+
+> WOW64 utilizes four 64-bit libraries (Ntdll.dll, Wow64.dll, Wow64Win.dll and Wow64Cpu.dll) to emulate the execution of 32-bit code and perform translations between the application and the kernel.
+> - On 32-bit versions of Windows, most native Windows applications and libraries are stored in `C:\Windows\System32`.
+> - On 64-bit versions of Windows, 64-bit native programs and DLLs are stored in `C:\Windows\System32` and 32-bit versions are stored in `C:\Windows\SysWOW64`.
+
+
 ## System32
 
-**在64位Windows上`System32`包含64位系统文件。直接支持64位操作系统的运行。**
-在32位Windows上`System32`就包含32位系统文件。
+在32位 Windows 上 `System32` 就包含32位系统文件。
+**在64位 Windows 上 `System32` 包含64位系统文件。直接支持64位操作系统的运行。**
 
 ## SysWOW64
 
-`SysWOW64`的"WOW"代表"Windows 32-bit on Windows 64-bit"。
-即它是一个兼容层，供在64位系统上运行的32位应用程序使用，所以里面**包含32位系统文件**。
+`SysWOW64` 的 "WOW" 代表 "Windows 32-bit on Windows 64-bit"。
+即它是一个兼容层，供在32位应用程序在64位系统上运行——所以里面**包含32位系统文件**。
 所以**仅64位系统有**，32位系统没有。
-
-
-> [!NOTE] 即仅64位系统要考虑
-> - 64位系统要跑64bit程序时，找32文件夹——因为它直接支持64位操作系统的运行。
-> - 64位系统要跑32bit程序时，找64文件夹——因为里面放着32bit用的文件。
-
 
 
 ## 判断应用程序的位数
