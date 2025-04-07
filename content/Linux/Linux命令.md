@@ -398,6 +398,15 @@ world
 - 快速注释多行：将光标移动到要注释的第一行上，按下大写字母“V”进入可视行模式，移动光标到要注释的最后一行，按下大写字母“I”进入行首插入模式，输入注释符号（如“#”）。
 - 快速取消注释多行：将光标移动到要取消注释的第一行上，按下大写字母“V”进入可视行模式，移动光标到要取消注释的最后一行，按下小写字母“x”删除注释符号。
 
+### less
+
+#### less 显示部分“乱码”
+
+有些 Linux 发行版默认会对 `grep` 命令 alias 成带 `--color=auto` 或 `--color=always` 的模式，再通过管道传给 `less` 时，这些颜色转义序列就“原样”地展示出来了。当用 `less` 查看而没有加任何让其“解释”颜色的参数时，它就会把日志中的控制码显式地打印出来，看起来就像 `ESC[36mINFOESC[0m` 之类的字符串。
+
+**解决：**
+1. 让 `less` 解释 ANSI 颜色：`less -R` 
+2. 在 `grep` 时去掉颜色：`grep --color=never`
 
 
 ### tee
@@ -810,11 +819,9 @@ CentOS6及之前都在用这个，CentOS7开始用新的命令：[[Linux命令#f
 - `iptables -t 表名 -L 链名`
 	- `iptables -t nat -L -n`
 
-> 关于linux转发windows流量以实现windows与THM、HTB的VPN互通：<https://timeless613.github.io/kiwi/Resources/iptables/>
-
+> 关于linux转发windows流量以实现windows与THM、HTB的VPN互通：[[iptables]]
 
 **（Netfilter5表5链）**
-
 
 理解：
 ![[Pasted image 20240311165707.png]]
