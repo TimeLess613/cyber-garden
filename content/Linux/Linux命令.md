@@ -826,6 +826,9 @@ CentOS6及之前都在用这个，CentOS7开始用新的命令：[[Linux命令#f
 理解：
 ![[Pasted image 20240311165707.png]]
 
+> 实践：[[iptables]]
+
+![[iptables#扩展知识]]
 
 
 ### firewalld
