@@ -495,6 +495,25 @@ index=…
 ```
 
 
+## [map](https://docs.splunk.com/Documentation/SplunkCloud/9.0.2209/SearchReference/Map?ref=hk) - for循环
+
+### 例
+
+- 场景：对于指定 envelope_from，搜索过去30天获取最新数据，没有的话搜索过去180天——想到可直接搜索180天并用 `| head 1` 获取最新数据。因为 splunk 是逆时序搜索。SPL：`search index="mail_log" earliest=-180d envelope_from="admin@example.com" | head 1`
+- 问题：对于多个指定 envelope_from，直接用 `envelope_from IN (a,b)` 然后再 `| head 1` 的话总会仅返回任意一行log，而期望是对于指定的 envelope_from 各返回1行。
+- 解决：`makeresults` 定义 list 字符串，`split`、`mvexpand` 展开后用 `map` 命令循环执行之前对于单个目标的搜索。最终整理SPL如下（注意：搜索语句的双引号要转义；用 `$` 括住 list 变量）：
+```SQL
+| makeresults 
+| eval envelope_from=split("admin@example.com,admin2@example.com", ",")
+| mvexpand envelope_from
+| map search="search index=\"mail_log\" earliest=-180d envelope_from=\"$envelope_from$\" | head 1"
+
+```
+
+> [!note] 限制
+> 不能在搜索管道中的 `append` 或 `appendpipe` 命令之后使用 `map` 命令。
+> 默认循环10次。可用 `maxsearches=100` 来调整（指定 0 并不表示无限循环）。
+
 
 ## 查看index属于哪个datamodel
 
@@ -505,9 +524,6 @@ index=…
 | table modelName 
 | map maxsearches=40 search="tstats `summariesonly` count from datamodel=$modelName$ by sourcetype,index | eval modelName=\"$modelName$\""
 ```
-
-
-## [map](https://docs.splunk.com/Documentation/SplunkCloud/9.0.2209/SearchReference/Map?ref=hk)
 
 
 ## datamodel

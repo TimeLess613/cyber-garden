@@ -310,7 +310,7 @@ Get-WinEvent -FilterHashtable @{
 
 ### 变量
 
-`$<variable> = <value>`。直接赋值，直接"$"调用。
+`$<variable> = <value>`。直接赋值，直接 `$<variable>` 调用。
 
 ### 字符串拼接
 
@@ -355,7 +355,22 @@ foreach ($file in $fileList) { Get-WinEvent -Path $file | Where-Object {$_.Messa
 
 
 
+### 函数
 
+除了一般常见的格式，还有这种（参数定义在函数体内）
+```powershell
+function <name>
+{
+  param([type]$Parameter1 [,[type]$Parameter2])
+  ……
+}
+```
+
+#### 传参
+
+括号仅用于 .NET 语法。PowerShell会将其识别为数组。
+
+![[Pasted image 20250412223942.png]]
 
 
 
