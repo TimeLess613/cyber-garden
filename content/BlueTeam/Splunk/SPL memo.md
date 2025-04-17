@@ -499,9 +499,9 @@ index=…
 
 ### 例
 
-- 场景：对于指定 envelope_from，搜索过去30天获取最新数据，没有的话搜索过去180天——想到可直接搜索180天并用 `| head 1` 获取最新数据。因为 splunk 是逆时序搜索。SPL：`search index="mail_log" earliest=-180d envelope_from="admin@example.com" | head 1`
-- 问题：对于多个指定 envelope_from，直接用 `envelope_from IN (a,b)` 然后再 `| head 1` 的话总会仅返回任意一行log，而期望是对于指定的 envelope_from 各返回1行。
-- 解决：`makeresults` 定义 list 字符串，`split`、`mvexpand` 展开后用 `map` 命令循环执行之前对于单个目标的搜索。最终整理SPL如下（注意：搜索语句的双引号要转义；用 `$` 括住 list 变量）：
+- 场景：对于指定 envelope_from，搜索过去30天获取最新数据，没有的话搜索过去180天——想到可简化查询逻辑，直接搜索180天并用 `| head 1` 获取最新数据，因为 splunk 是逆时序搜索。SPL：`search index="mail_log" earliest=-180d envelope_from="admin@example.com" | head 1`
+- 问题：对于多个指定 envelope_from，如果直接用 `envelope_from IN (a,b)` 搜索然后再 `| head 1` 的话仅返回整体结果中的1条记录。而期望是能够对每个 envelope_from 分别获取1条最新记录。
+- 解决：`makeresults` 定义 list 字符串，`split` 转换为多值字段、`mvexpand` 展开成多行后，用 `map` 命令对每行数据循环执行之前对于单个目标的搜索。最终整理SPL如下（注意：搜索语句的双引号要转义；用 `$` 括住 list 变量）：
 ```SQL
 | makeresults 
 | eval envelope_from=split("admin@example.com,admin2@example.com", ",")
