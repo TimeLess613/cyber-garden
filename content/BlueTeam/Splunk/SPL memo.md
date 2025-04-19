@@ -283,7 +283,7 @@ over的值会显示在行，而by的值显示为列。那么其实over和by没�
 	- 可以指定 `type=outer`（外部结合）——对于没有匹配到的，会添加null值的字段
 	-  `[field]`不存在的event将被忽略
 
-
+> [!note] `join` 有默认5万行的搜索上限。
 
 ## Tabular output vs. Stats-like output
 

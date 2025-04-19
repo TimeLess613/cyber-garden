@@ -997,7 +997,7 @@ pam：Pluggable Authentication Modules，可插拔式认证模块。
 
 `chage -l <user>`：确认用户密码策略。
 
-
+`chage -M <day> <user>`：修改最大密码期限限制（`-M -1` 为无期限）
 
 
 

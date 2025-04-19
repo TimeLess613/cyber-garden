@@ -120,6 +120,7 @@ gc log.txt | %{ $_ -replace '\d+', '($0)' }    ## sed
 
 [[FileTransfers-Windows#Download]]
 
+
 #### 历史命令
 
 - 查看保存历史命令的文件：`(Get-PSReadlineOption).HistorySavePath`
