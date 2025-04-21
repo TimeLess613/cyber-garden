@@ -13,7 +13,8 @@ const config: QuartzConfig = {
     enableSPA: false,
     enablePopovers: true,
     analytics: {
-      provider: "plausible",
+      provider: 'clarity',
+      projectId: 'r7ngf4paqj'
     },
     locale: "en-US",
     baseUrl: "timeless613.github.io/cyber-garden",
