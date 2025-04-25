@@ -82,11 +82,12 @@ runas /user:machine\allc /password cmd.exe
 ### schtasks
 
 `schtasks /query [/tn vulntask_full_path] /fo list /v`
-- tn默认根路径，其他路径的任务需要指定路径
+- `/tn` 默认根路径，其他路径的任务需要指定路径
 ### at
 
 旧版
 
+> 在windows server 2012及以后的操作系统已经弃用了 `at` 命令，转而使用 `schtasks` 命令，`schtasks` 命令比 `at` 命令更加的灵活，但是在使用 `schtasks` 命令时，就会在系统中留下日志文件：`C:\Windows\Tasks\xx.txt`
 
 
 ## net命令

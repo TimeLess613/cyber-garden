@@ -86,7 +86,15 @@ tags:
 - 注意：目标host的`authorized_keys`需要以换行符结尾。因为该命令直接将公钥添加到目标host的`authorized_keys`文件的末尾，如果该文件本身不是以换行符结尾，将导致格式错误而配置无效。
 
 
+### 例：将密钥放到SaaS
 
+允许SaaS连接自己
+```bash
+ssh-keygen -m PEM    # 如果 SaaS 仅支持 PEM
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+vi ~/.ssh/authorized_keys    # 限制 SrcIP，在开头添加：from="<IP>"
+```
 
 ## 配置证书登陆
 

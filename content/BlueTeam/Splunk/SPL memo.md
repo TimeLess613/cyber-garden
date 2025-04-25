@@ -495,13 +495,13 @@ index=…
 ```
 
 
-## [map](https://docs.splunk.com/Documentation/SplunkCloud/9.0.2209/SearchReference/Map?ref=hk) - for循环
+## map - for循环
 
 ### 例
 
-- 场景：对于指定 envelope_from，搜索过去30天获取最新数据，没有的话搜索过去180天——想到可简化查询逻辑，直接搜索180天并用 `| head 1` 获取最新数据，因为 splunk 是逆时序搜索。SPL：`search index="mail_log" earliest=-180d envelope_from="admin@example.com" | head 1`
+- 场景：获取特定 envelope_from 的最新记录。不用 sort 直接 `| head 1` ，因为 splunk 是逆时序搜索。SPL：`search index="mail_log" earliest=-180d envelope_from="admin@example.com" | head 1`
 - 问题：对于多个指定 envelope_from，如果直接用 `envelope_from IN (a,b)` 搜索然后再 `| head 1` 的话仅返回整体结果中的1条记录。而期望是能够对每个 envelope_from 分别获取1条最新记录。
-- 解决：`makeresults` 定义 list 字符串，`split` 转换为多值字段、`mvexpand` 展开成多行后，用 `map` 命令对每行数据循环执行之前对于单个目标的搜索。最终整理SPL如下（注意：搜索语句的双引号要转义；用 `$` 括住 list 变量）：
+- 解决：`makeresults` 定义 list 字符串，`split` 转换为多值字段、`mvexpand` 展开成多行后，用 `map` 命令对每行数据循环执行之前对于单个目标的搜索。最终整理SPL如下：
 ```SQL
 | makeresults 
 | eval envelope_from=split("admin@example.com,admin2@example.com", ",")
@@ -510,9 +510,15 @@ index=…
 
 ```
 
+> [!note] 注意
+> - 搜索语句的双引号要转义
+> - 用 `$` 括住 list 变量
+
+[文档 - map](https://docs.splunk.com/Documentation/SplunkCloud/9.0.2209/SearchReference/Map?ref=hk)
+
 > [!note] 限制
-> 不能在搜索管道中的 `append` 或 `appendpipe` 命令之后使用 `map` 命令。
-> 默认循环10次。可用 `maxsearches=100` 来调整（指定 0 并不表示无限循环）。
+> - 不能在搜索管道中的 `append` 或 `appendpipe` 命令之后使用 `map` 命令。
+> - 默认循环10次。可用 `maxsearches=100` 来调整（指定 0 并不表示无限循环）。
 
 
 ## 查看index属于哪个datamodel
@@ -656,13 +662,15 @@ index="ad" sourcetype="ALOG_ACCESS_AD" action="LOGON-Failure"
 
 ### 范围指定
 
-> ![[Splunk知识点#earliest&latest]]
-
 **格式：`%m/%d/%Y:%H:%M:%S`**
-
 - `earliest=01/31/2023:00:00:00 latest=04/30/2023:00:00:00`
 
 > [!NOTE] datamodel用不了这种形式
+
+> ![[Splunk知识点#earliest&latest]]
+
+
+
 
 ### 格式化
 
@@ -700,11 +708,21 @@ index IN("ad_g") sourcetype=ALOG earliest=-0d@d latest=now | eval flag_date="Tod
 
 ## mv相关
 
-很多时候mv函数的参数都有个表达式——因为mv是list数据，所以mv函数的意图是迭代处理。
+很多时候mv函数的参数都有个表达式——**因为 mv 是 list 数据**，所以mv函数的意图是迭代处理。
 
 - `…| eval failure_user_count=mvcount(mvfilter(match(v_ua, "-Failure")))`
 - `…| eval v_normal_error_uni = mvdedup(mvmap(v_uat , replace(v_uat, "WRITE_", "READ_")))`
 
+
+### 变为多值字段
+
+> mv 是 list 数据
+
+最简单的方式：`| stats values(field)` 统计的结果就是多值。
+切分为list：`| eval ID_mv=split("a,b,c", ",")`
+- 逆运算：`| eval ID=mvjoin(ID_mv, ",")`
+
+> 联系：[[SPL memo#map - for循环]]
 
 ## 字符串处理
 
