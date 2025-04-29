@@ -16,7 +16,7 @@ tags:
 
 ---
 
-Docker Engine：即 Docker CE（Community Edition）。在某次更新后更名为此，区别于“Docker Desktop”。
+Docker Engine：即 Docker CE（Community Edition）。在某次更新后更名为此（因为以前有的 Docker EE 已经被 Mirantis 接手）。现在 Docker Engine 区别于“Docker Desktop”。
 
 ## 安装
 
@@ -425,14 +425,25 @@ docker-compose 也可自定义（需要docker-compose.yml文件定义version2或
 
 ## docker-compose
 
+> [!note] 升级到 Docker Compose v2
+> [docker-compose 与 docker compose](https://forums.docker.com/t/docker-compose-vs-docker-compose/137884/7)
+> 
+> - `sudo apt-get remove docker-compose`
+> - `sudo apt-get install docker-compose-plugin`
+> - `docker compose version`
+
 ```bash
-docker-compose up -d --build [service] [service...]
+docker-compose up -d --build [service] [service...] [--profile service]
+```
+- `--profile`：显式指定需要启动的profile。需要如下语法来定义 profiles 标签名：
+```docker-compose.yml
+service:
+	......
+	profiles:
+		- frontend
 ```
 
-
-
-
-在大多数情况下，Docker Compose **会自动检测变更并更新容器**，**不需要手动先停止容器**。但不同情况的行为有所不同
+在大多数情况下，Docker Compose **会自动检测变更并更新容器**（只会 rebuild 有变动的服务），**不需要手动先停止容器**。**但不同情况的行为有所不同（挂载了 volume 使代码同步映射，或者有其他热重载配置）**
 
 🚀 **推荐日常使用方式**
 
@@ -443,8 +454,7 @@ docker-compose up -d --build
 
 2. **如果修改了 `Dockerfile` 或 `docker-compose.yml`，最好先停掉容器：**
 ```bash
-docker-compose down 
-docker-compose up -d --build
+docker-compose down && docker-compose up -d --build
 ```
 
 3. **如果需要清理无用容器和 volumes（如数据库存储），使用：**
@@ -456,11 +466,25 @@ docker-compose up -d --build
 ```
 
 > [!note] 报错解决：KeyError: 'ContainerConfig'
-> 这个就要用上述3
+> 这个就要用上述 2 或 3
  
 
 
+### 关于 kali上的 Compose 支持
 
+安装时报错：
+```bash
+└─$ sudo apt-get update && sudo apt-get install docker-compose-plugin
+<SNIP>             
+E: 无法定位软件包 docker-compose-plugin
+```
+
+原因：似乎是 `docker.io` 版本较落后，未支持 `docker compose` v2。
+
+| 安装方式                        | Docker Engine 版本      | Compose 版本                        | 支持 Compose v2 CLI 插件？ |
+| --------------------------- | --------------------- | --------------------------------- | --------------------- |
+| Kali / Debian (`docker.io`) | 往往是旧版（比如 20.x 或 23.x） | 只有旧版 Python `docker-compose` v1.x | ❌ 不支持                 |
+| Docker 官方仓库 (`docker-ce`)   | 最新稳定版（24.x）           | 内置 `docker compose` v2.x 插件       |                       |
 
 
 
