@@ -290,7 +290,29 @@ python2中不继承 object 的类叫经典类，继承 object 的类叫做新式
 
 ## 回调函数（Callback Function）
 
-是将一个函数作为参数传递给另一个函数，然后在特定的条件或事件发生时，这个参数函数会被调用执行。回调函数通常用于处理异步操作、事件处理或回调模式等场景。
+> [!note] 就是被当做参数的函数（之后被调用）
+
+将一个函数作为参数传递给另一个函数，然后在特定的条件或事件发生时，这个参数函数会被调用执行。回调函数通常用于处理异步操作、事件处理或回调模式等场景。
+
+例：
+```js
+function greet(name, callback) {
+  console.log("你好，" + name);
+  callback(); // 在这里“回过头来”调用传入的函数
+}
+
+function sayGoodbye() {
+  console.log("再见！");
+}
+
+greet("小明", sayGoodbye);
+```
+- `sayGoodbye` 是回调函数
+- 它被作为参数传入了 `greet`
+- 然后由 `greet` 在合适时机调用
+
+> [!note] 回调（Callback）的含义
+> Call back，不是你主动调用别人，而是别人在某个时机“反过来”来调用你。
 
 
 ## 数组本质
