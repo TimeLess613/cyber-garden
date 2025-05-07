@@ -37,7 +37,7 @@ tags:
 ```
 ✅ 只会执行找到的第一个用户配置文件（比如你有 `.bash_profile`，就不会继续找 `.bash_login`）
 
-> [!note] `exec bash -l` 走完整的 login 流程（加载 `/etc/profile`, `~/.bash_profile` 等）
+> [!note] `exec bash -l` 走完整的 login 登陆流程（加载 `/etc/profile`, `~/.bash_profile` 等）
 > 但 `/etc/environment` 中定义的 `KEY=VALUE` 环境变量不会被这样应用，因为这个登陆流程不加载 PAM—— `/etc/environment` 其实是被 PAM 的 `pam_env.so` 模块调用。
 > 查找定义文件：`grep pam_env.so /etc/pam.d/*`，可以看到什么情况下会加载这个模块。如login、ssh、su等。虚拟机重新连接和 `bash -l` 不加载PAM（login 似乎是指物理的 console登陆）。
 

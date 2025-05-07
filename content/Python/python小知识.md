@@ -87,7 +87,10 @@ class APIRequest:
 
 
 
-## `pip requirements.txt`
+## pip 的 requirements.txt
+
+- `pip freeze > requirements.txt`
+- `pip install -r requirements.txt`
 
 ![[Pasted image 20240304000628.png]]
 

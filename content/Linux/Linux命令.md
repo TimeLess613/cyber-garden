@@ -898,10 +898,11 @@ sudo firewall-cmd --reload && sudo systemctl restart firewalld
 
 切换用户。
 
-`su`和`su -`：
+`su` 和 `su -`：
 
-- su命令不指定user名则默认root
-- `su -`是用户和[[Linux命令#shell环境]]都切换，所以**环境变量会不同**
+- `su` 命令不指定 user 名则默认 root
+- `su -` 是用户和[[Linux命令#shell环境]]都切换，所以**环境变量会不同**
+	- `sudo su -` 和 `sudo -i` 的行为相似，都启用了 [[Linux文件目录结构#bashrc|login shell]]。不过 `sudo -i` 少一步 `su` 进程。
 - `su`只切换了用户，就可能出现PATH错误
 
 
@@ -911,6 +912,21 @@ sudo firewall-cmd --reload && sudo systemctl restart firewalld
 - `-s /bin/bash`： 创建时指定shell（默认/bin/sh或bash?），或者可以之后编辑passed文件修改
 
 > [!NOTE] 添加新用户后，要用`passwd`命令给他加密码，否则无法登陆。
+
+
+### usermod
+
+修改用户所属的组。
+
+一般推荐不更改用户的主组，用 `-a` 添加到附加组：`usermod -aG <group> <user>`
+
+> [!note] 主组和附加组
+> - 主组（Primary Group）：默认与用户名同名。创建文件时该文件的 group 就是用户的主组
+> - 附加组（Supplementary Groups）：用户可以属于多个附加组，用来授予额外权限
+
+
+
+
 
 ### passwd
 
@@ -989,6 +1005,7 @@ pam：Pluggable Authentication Modules，可插拔式认证模块。
 
 ### chgrp
 
+修改**文件**的组。修改**用户**的组用 [[Linux命令#usermod]]
 
 
 ### chage

@@ -5,11 +5,11 @@ tags:
 ---
 ## 踩坑
 
-#VScode
+#VScode [[Linux命令#usermod]]
 `sudo usermod -aG docker $USER`添加组并重启VScode远程连接主机后，prompt 发生异常（变为极简版本：`hostname$`）。确认目前进程执行的是zsh，但是运行 `exec bash` 后prompt恢复正常。
 不确定是否和运行了 `newgrp docker` 有关。多次重启VScode连接无果，且突然发现之前加入的docker组消失了，后来发现 `newgrp docker` 仅为临时设定。
 
-最终解决：重启主机。
+**最终解决：重启主机。**
 参考：
 > https://stackoverflow.com/questions/56305613/cant-add-user-to-docker-group
 > https://stackoverflow.com/questions/56305613/cant-add-user-to-docker-group/66297855#66297855
