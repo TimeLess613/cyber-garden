@@ -2,6 +2,17 @@
 
 此网站·知识库本意为记录[[basic-concepts|渗透测试]]学习经历，后以此为起点，逐步整合过去的与此相关的知识。
 
+
+
+## Highlight
+
+- [[LSA]]
+- [[AD域认证协议]]
+- [[Windows权限体系]]
+- [[本地凭据转储]]
+- [[域前置（Domain Fronting）]]
+
+
 ## 靶机平台
 
 <div class="flex-container">

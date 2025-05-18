@@ -4,10 +4,10 @@ tags:
   - 渗透/内网
   - IT/认证
 ---
-Simple and Protected gss-api NEGOtiation mechanism
+> Simple and Protected gss-api NEGOtiation mechanism
 
 
-微软创建的SSO协议。在 [[GSS-API]] 之上运行。
+微软创建的 SSO 协议。在 [[GSS-API]] 之上运行。
 
 即NegotiateSSP（ref: [https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc772815(v=ws.10)](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc772815(v=ws.10))）
 

@@ -246,7 +246,7 @@ find / \( -path /proc -o -path /run \) -prune -o \( -user $(id -un) -o -group $(
 	- `-n`输出对应的行号
 
 
-**踩坑：**
+#踩坑
 
 - grep搜不到结果则rc为1，所以要小心使用`set -e`（不过应该可以用命令替换——子shell）
 - `grep -f`无结果。考虑f文件是否从window传输而来。即使用awk整理，但换行符未处理：：[[换行符#转换与删除]]

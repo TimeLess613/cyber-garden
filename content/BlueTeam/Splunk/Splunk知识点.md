@@ -41,6 +41,7 @@ tags:
 > [About event segmentation](https://docs.splunk.com/Documentation/Splunk/9.2.0/Data/Abouteventsegmentation)
 > **Lispy Expression**: to build a **bloom filter** and check against TSIDX files.
 
+#踩坑 
 > [!NOTE] 搜索短语似乎也会踩坑
 > 如搜索`index=security "failed password"`，由于Lispy Expression解析为：`[ AND failed index::security password ]`，似乎会返回包含failed和password的event而不是"failed password"顺序的。
 

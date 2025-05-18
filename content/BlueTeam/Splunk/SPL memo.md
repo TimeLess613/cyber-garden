@@ -218,7 +218,9 @@ transaction命令会添加2个字段到raw events：
 
 ## stats
 
-> [!NOTE] 踩坑：统计时注意event是否有目标字段
+#踩坑 
+
+> [!note] 统计时注意event是否有目标字段
 > stats只会统计有目标字段的event。所以如果原event中**某些event没有A字段**，而BY子句又写了A字段，那么将只会统计有A字段的那部分event。即可能丢失一部分自己从搜索结果看到的内容。
 
 ^fc8c23

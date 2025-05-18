@@ -115,7 +115,7 @@ cd Python-3.5.2/
 - 如果报错“configure: error: no acceptable C compiler found in $PATH”，说明没有合适的编译器，运行：yum install make gcc gcc-c++
 `make && make install`
 
-*python3更新踩坑：[SSL](https://stackoverflow.com/questions/53543477/building-python-3-7-1-ssl-module-failed)：`./configure --with-ssl`*
+python3更新 #踩坑 ：[SSL](https://stackoverflow.com/questions/53543477/building-python-3-7-1-ssl-module-failed)：`./configure --with-ssl`
 
 
 
