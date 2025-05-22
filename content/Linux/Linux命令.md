@@ -819,16 +819,30 @@ CentOS6及之前都在用这个，CentOS7开始用新的命令：[[Linux命令#f
 - `iptables -t 表名 -L 链名`
 	- `iptables -t nat -L -n`
 
-> 关于linux转发windows流量以实现windows与THM、HTB的VPN互通：[[iptables]]
+> 关于linux转发windows流量以实现windows与THM、HTB的VPN互通：[[iptables 转发实践]]
+
+![[iptables 转发实践#其他命令]]
+
+
+---
 
 **（Netfilter5表5链）**
+
+| 表 名称         | 作用简介                                | 默认链                                             |
+| ------------ | ----------------------------------- | ----------------------------------------------- |
+| **filter**   | 做数据包过滤，决定 ACCEPT / DROP / REJECT    | INPUT, FORWARD, OUTPUT                          |
+| **nat**      | 网络地址转换，用于新建连接的源/目的地址重写              | PREROUTING, OUTPUT, POSTROUTING                 |
+| **mangle**   | 对数据包做深度修改（如 TOS、TTL、打标记等）           | PREROUTING, INPUT, FORWARD, OUTPUT, POSTROUTING |
+| **raw**      | 在 conntrack 前对包做特殊处理（如关闭跟踪 NOTRACK） | PREROUTING, OUTPUT                              |
+| **security** | 与 SELinux/AppArmor 等安全模块集成，做额外访问检查  | INPUT, FORWARD, OUTPUT                          |
+
+> [!note] OCI 公开服务器端口时，除了配置 VCN 子网入站规则，还需要在服务器中配置 FW 放行
 
 理解：
 ![[Pasted image 20240311165707.png]]
 
-> 实践：[[iptables]]
 
-![[iptables#扩展知识]]
+![[iptables 转发实践#扩展知识]]
 
 
 ### firewalld

@@ -4,6 +4,9 @@ tags:
   - 渗透/后渗透
 ---
 
+> [[Linux命令#iptables]]
+
+
 ### 背景
 
 2023/07/08
@@ -135,8 +138,9 @@ Linux NAT 系统依赖 **conntrack（连接跟踪）机制**，会记录原始�
 
 ### 其他命令
 
-- 确认配置的NAT表：`sudo iptables -t nat -L`
-- 确认filter表：`sudo iptables -L` *（因为iptables默认filter表所以不用`-t`选项）*
+- 确认配置的 NAT 表：`sudo iptables -t nat -L`
+- 列出（filter 表）所有链的规则（显示行号和不解析端口名）：`sudo iptables -L -n --line-numbers` *（因为 iptables 默认 filter 表所以不用 `-t` 选项指定表）*
+- 只查看 INPUT 链的规则：`sudo iptables -L INPUT -n --line-numbers`
 - 清除配置：`sudo iptables -F [-t nat]`
 
 ### 注意
