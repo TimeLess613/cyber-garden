@@ -8,9 +8,12 @@ tags:
 
 OAuth 2.0 使用访问令牌（Access Token）来**代表用户**的授权。访问令牌通常是简短的字符串，由认证服务器签发，并且用于访问资源服务器上的受保护资源。
 
-- Resource Owner：资源的所有者，一般是用户。决定是否让某个应用可以访问自己的资源。
+
+4个角色：
+- Resource Owner：资源的所有者，一般是**用户**。决定是否让某个应用可以访问自己的资源。
 - Resource Server：资源存放的地方。
 - Client：一般是某个应用，来代替用户访问他的资源。
+- Authorization Server：如 Azure、Google等。
 
 
 
@@ -18,13 +21,28 @@ OAuth 2.0 使用访问令牌（Access Token）来**代表用户**的授权。访
 
 > ServiceNow的参考连接： [OAuth Grant Types: Explained](https://support.servicenow.com/kb?id=kb_article_view&sysparm_article=KB1647747)
 
+
+### 【废弃】Resource Owner Password Credentials (ROPC) Flow
+
+```
+[Client App] <── 用户输入账号密码（直接给客户端）
+       |
+       └─> [Authorization Server] ──> Access Token
+```
+
+- 客户端直接处理账号密码，如果客户端被攻破凭据有泄漏风险。
+
+
+
 ### Authorization Code Flow
+
+- 用户是在授权服务器的页面输入凭据，客户端看不到。
 
 ```
  +--------+                               +---------------+
  |        |--(A)- Authorization Request ->|   Resource    |
  |        |                               |     Owner     |
- |        |<-(B)-- Authorization Grant ---|               |
+ |        |<-(B)-- Authorization Grant ---|    (User)     |
  |        |     (redirect_uri?code=...)   +---------------+
  |        |
  |        |                               +---------------+
@@ -48,7 +66,22 @@ OAuth 2.0 使用访问令牌（Access Token）来**代表用户**的授权。访
 ```
 
 
+```
+[User] ──> [Client App (browser)]
+     └─> Redirect to Authorization Server (login + consent)
+          └─> Redirect back with code
+               └─> [Client Backend] sends code to Authorization Server
+                    └─> Get Access Token
+                         └─> Call Resource Server with token
+```
+- 更贴近实际开发中的跳转与回调逻辑
+- Resource Owner 与 Authorization Server 合并为同一系统入口
+
+
 ### Client Credentials Flow
+
+- 纯后端调用、无用户参与
+- 在 Client Credentials Flow 中，`client_id` 和 `client_secret` 是从授权服务器注册应用时获取的
 
 ```
 +--------+                                  +---------------+

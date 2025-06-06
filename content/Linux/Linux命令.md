@@ -815,11 +815,30 @@ netstat的替代。
 iptables是Linux系统流行的防火墙软件，在大部分发行版中都自带。而容器的访问控制主要通过iptables来进行管理和实现。
 CentOS6及之前都在用这个，CentOS7开始用新的命令：[[Linux命令#firewalld|firewalld]]（但是原理还是iptables，算是封装了）。
 
+**查看：**
 - `iptables -t 表名 --list --line-numbers`
 - `iptables -t 表名 -L 链名`
 	- `iptables -t nat -L -n`
 
+**修改入站规则（默认为临时配置）：**
+- 添加：`sudo iptables -I INPUT 1 -p tcp -s 1.2.3.4 -j ACCEPT`
+- 删除：`sudo iptables -D INPUT -s 1.2.3.4 -j ACCEPT`
+- 修改/替换：`sudo iptables -R INPUT 1 -p tcp -s 1.2.3.4 -j ACCEPT`
+
+**持久化：**
+```bash
+# Debian/Ubuntu
+sudo apt-get install iptables-persistent
+sudo netfilter-persistent save
+
+# CentOS/RHEL 7+
+sudo yum install iptables-services
+sudo service iptables save
+```
+
+**修改 NAT 规则：**
 > 关于linux转发windows流量以实现windows与THM、HTB的VPN互通：[[iptables 转发实践]]
+
 
 ![[iptables 转发实践#其他命令]]
 

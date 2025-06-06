@@ -3,6 +3,31 @@ tags:
   - IT/Python
 ---
 
+## 去重
+
+**单纯列表的去重方法对比**
+
+| 方法                         | 保顺序 | 性能         | 推荐用途                |
+| -------------------------- | --- | ---------- | ------------------- |
+| `list(dict.fromkeys(...))` | ✅ 是 | ✅ 高效（O(n)） | ✅ 日常推荐用法            |
+| `set(...)`                 | ❌ 否 | ✅ 高效（O(n)） | 顺序无要求时最快            |
+| `if not in list: append`   | ✅ 是 | ❌ 慢（O(n²)） | 小数据量临时处理可用，不推荐用于大数据 |
+
+如果是字典元素组成的列表，把字典变成可哈希的类型——去重的依据是“值相等”，而计算唯一性需要“可哈希（hashable）”。
+```
+unique = []
+seen = set()
+
+for d in detection_data_dum:
+    key = frozenset(d.items())  # 把 dict 转成 hashable 的 key
+    if key not in seen:
+        seen.add(key)
+        unique.append(d)
+```
+
+
+
+
 ## 判断值的真假：`print(True if value else False)`
 
 ![[Pasted image 20240304002808.png]]
@@ -21,6 +46,25 @@ tags:
 ## 列表·字典解析：不止简单、还快
 
 ![[Pasted image 20240304002540.png]]
+
+
+### `if…else` 三元表达式 vs. 列表解析
+
+如果想用三元表达式，它的完整形式是
+```python
+[值1 if 条件 else 值2 for 变量 in …]
+```
+- 必须带 `else`，否则也会语法错误。
+
+如果只是要过滤（不需要 `else`），就应把 `if` 放在最后：
+```python
+[clean_value(i) for i in merged_file_info if clean_value(i)]
+```
+
+
+
+
+
 
 ## 字典合并
 

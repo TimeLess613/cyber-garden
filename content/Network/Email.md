@@ -107,6 +107,8 @@ SMTP服务器地址——相当于信封。
 	- id：MailSrv的ID
 	- via：经过地的环境&协议
 
+> [[Email安全#SPF]] / [[Email安全#🧾 简化流程如下]]
+
 ### Return-Path：发信失败时的返回地址
 
 - 一般，给Envelope From（即由 `MAIL FROM` 命令通知的发信人），不过也可以用Return-Path特别指定。
