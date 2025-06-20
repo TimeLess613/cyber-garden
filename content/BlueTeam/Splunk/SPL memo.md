@@ -237,13 +237,13 @@ over的值会显示在行，而by的值显示为列。那么其实over和by没�
 
 - [[SPL memo#stats变体]]
 
-当我用过一次stats后，还想更进一步统计时，再加一个stats的话会生成一个新table覆盖前面的统计——所以，用eventstats的话能追加一列计算前面统计结果的统计（即保留原统计）。
+当用过一次 stats 后，还想更进一步统计时，再加一个 stats 的话会生成一个新table覆盖前面的统计——所以，**用 eventstats 的话能追加一列**计算前面统计结果的统计（即保留原统计）。
 
-### streamstats（动态统计）
+### streamstats（动态统计、滑动统计）
 
 - [[SPL memo#stats变体]]
 
-比eventstats控制得更精细——能统计指定条数的event，如移动平均。能统计每个event，如stats的count是每行的总数，而steamstats则可以计算multi数据。
+比 eventstats 控制得更精细——能统计指定条数的 event，如移动平均。能统计每个 event，如 stats 的 count 是每行的总数，而 steamstats 则可以计算 multi 数据。
 **且保留时间的时间顺序。**
 
 > [!NOTE] 关键
@@ -434,7 +434,7 @@ foreach后指定要循环的字段（可用通配符）
 
 #### coalesce：合并
 
-对指定的（多个）字段中，返回第一个非null值。用于多种log（如多家厂商等）对同一含义的数据有不同字段名时，自己创建一个上层字段来吸收他们的字段名差异。
+对指定的（多个）字段中，返回第一个非null值。用于多种log（如多家厂商等）对同一含义的数据有不同字段名时，自己创建一个上层字段来吸收他们的字段名差异（给每种 log 添加一个字段）。
 
 
 ## splunk正则
@@ -624,8 +624,8 @@ datamodel不可用earliest那种，需要 `where relative_time()`
 
 ### [[SPL memo#eventstats（追加列——双重统计）]] 和 [[SPL memo#streamstats（动态统计）]]
 
-- 两者都是统计事件并给每个事件放入一个新字段
-- 不过eventstats是静态，而streamstats是动态——即streamstats加入的新字段的统计值会根据统计事件的数目而变动/滑动
+- **两者都是统计事件并给每个事件放入一个新字段**
+- **不过eventstats是静态，而streamstats是动态——即streamstats加入的新字段的统计值会根据统计事件的数目而变动/滑动**
 
 [https://www.bitsioinc.com/using-splunk-statistical-commands-eventstats-and-streamstats/#:~:text=Splunk%20streamstats%20command%20calculates%20a,requests%20as%20events%20are%20seen](https://www.bitsioinc.com/using-splunk-statistical-commands-eventstats-and-streamstats/#:~:text=Splunk%20streamstats%20command%20calculates%20a,requests%20as%20events%20are%20seen).
 
