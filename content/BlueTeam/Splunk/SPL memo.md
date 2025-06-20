@@ -130,7 +130,19 @@ index=dns
 
 经常运行的搜索/地方（schedule、dashboard）不建议使用子搜索。
 
-### “突破上限”
+
+### 突破上限
+
+结合 coalesce 和 eventstats。
+```SQL
+(index=proxy) OR (index=itam)
+| eval dvc_id=coalesce('hostname', 'HRD_NO')
+| table dvc_id, proxy_filedA,proxy_filedB,itam_filedC,itam_filedD
+| eventstats values(itam_filedC) AS C, values(itam_filedD) AS D by dvc_id
+| stats ... by dvc_id C D
+```
+
+### “突破上限”（假）
 
 关键是多嵌套一个子搜索以获取指定目标。
 
