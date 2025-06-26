@@ -100,3 +100,96 @@ for d in detection_data_dum:
 ## 一个单独的下划线：表示不关心的临时变量
 
 如：`for _ in range(10)`
+
+
+
+## 时间解析
+
+**python3.9以上推荐标准库 zoneinfo**
+
+### 时区转换
+
+```python
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+# 假设已有 UTC 时间 dt_utc
+dt_utc = datetime.fromisoformat("2025-06-26T12:34:56+00:00")
+
+# 转换到日本东京时间
+dt_jst = dt_utc.astimezone(ZoneInfo("Asia/Tokyo"))
+print(dt_jst.isoformat())  # 2025-06-26T21:34:56+09:00
+print(dt_jst) # 会调用 `datetime` 对象的 `__str__`，默认输出类似：2025-06-26 21:34:56+09:00（用空格而不是 T 分隔日期和时间）
+
+#### ------------------------- ####
+
+# 转 UTC
+s = "2025-06-26T21:34:56+09:00"
+dt_utc = datetime.fromisoformat(s).astimezone(ZoneInfo("UTC"))
+
+#### ------------------------- ####
+
+# 如果你拿到的是“无时区”的（naive）`datetime` 字符串，比如 `"2025-06-26T21:34:56"`，可先指定来源时区，再转换：
+# 先解析/构造一个 naive datetime，再赋给来源时区
+dt_naive = datetime.fromisoformat("2025-06-26T21:34:56")
+dt_with_tz = dt_naive.replace(tzinfo=ZoneInfo("Europe/London"))  # 如果本身是伦敦时间
+# 再转 UTC。
+dt_utc = dt_with_tz.astimezone(ZoneInfo("UTC"))
+print(dt_utc.isoformat())  # 输出相应的 UTC 时间
+
+```
+
+> [!note] `datetime.fromisoformat` 在 3.9–3.10 中**不支持**`Z`（Zulu）的直接解析，需要预处理替换为 `+00:00`。（3.11之后就支持了）
+
+```python
+def parse_iso8601(s: str) -> datetime:
+    if s.endswith("Z"):
+        s = s[:-1] + "+00:00"
+    return datetime.fromisoformat(s)
+
+# 示例
+dt = parse_iso8601("2025-06-26T12:34:56Z")
+```
+
+#### zoneinfo 的时区查找
+
+```bash
+# 1. Linux 命令
+$ ls /usr/share/zoneinfo    # 这个好用
+$ timedatectl list-timezones
+
+# 2.从 zoneinfo 库查看
+from zoneinfo import available_timezones
+# available_timezones() 返回一个 set，包含所有安装的时区名称
+tz_list = sorted(available_timezones())
+print(tz_list[:10])  # 打印前 10 个示例
+```
+
+
+### 时间戳解析
+
+```python
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo  # Python 3.9+
+
+ts = 1_656_000_000
+
+# 1 直接用固定偏移——开销小
+dt_utc = datetime.fromtimestamp(ts, tz=timezone.utc)
+print(dt_utc.isoformat())  
+# 2022-06-17T05:40:00+00:00
+
+# 2 用 IANA 时区——考虑夏令时（DST）
+dt_tokyo = datetime.fromtimestamp(ts, tz=ZoneInfo("Asia/Tokyo"))
+print(dt_tokyo.isoformat())  
+# 2022-06-17T14:40:00+09:00
+
+
+# 3 毫秒级
+ms_ts = 1_656_000_000_000  
+dt = datetime.fromtimestamp(ms_ts / 1000, tz=timezone.utc)
+print(dt.isoformat())  
+# 2022-06-17T05:40:00+00:00
+```
+
+> [!note] 不传 `tz` 参数时，`fromtimestamp` 会根据系统本地时区（如 Asia/Tokyo）计算，但生成的是**naive**（`tzinfo=None`）的 `datetime`。
