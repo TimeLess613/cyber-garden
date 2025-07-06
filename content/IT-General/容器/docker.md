@@ -421,17 +421,20 @@ docker-compose 也可自定义（需要docker-compose.yml文件定义version2或
 
 
 
-## docker-compose
+## docker compose
 
 > [!note] 升级到 Docker Compose v2
 > [docker-compose 与 docker compose](https://forums.docker.com/t/docker-compose-vs-docker-compose/137884/7)
 > 
-> - `sudo apt-get remove docker-compose`
-> - `sudo apt-get install docker-compose-plugin`
-> - `docker compose version`
+> - 手动安装方式。不支持自动更新，但是简单。
+> https://docs.docker.com/compose/install/linux/#install-the-plugin-manually
+
+验证：`docker compose version`
+- **新版使用 `docker compose`（空格）而不是旧的 `docker-compose`（带连字符）**
+
 
 ```bash
-docker-compose up -d --build [service] [service...] [--profile service]
+docker-compose up -d [--build] [service] [service...] [--profile service]
 ```
 - `--profile`：显式指定需要启动的profile。需要如下语法来定义 profiles 标签名：
 ```docker-compose.yml
@@ -443,9 +446,10 @@ service:
 
 在大多数情况下，Docker Compose **会自动检测变更并更新容器**（只会 rebuild 有变动的服务），**不需要手动先停止容器**。**但不同情况的行为有所不同（挂载了 volume 使代码同步映射，或者有其他热重载配置）**
 
+
 🚀 **推荐日常使用方式**
 
-1. **如果只是更新代码（无 Dockerfile 变更），直接运行：**
+1. **如果只是更新代码（无 Dockerfile 变更），可无脑运行（除非 build 很耗时）：**
 ```bash
 docker-compose up -d --build
 ```
