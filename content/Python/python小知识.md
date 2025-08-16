@@ -196,9 +196,14 @@ print(sys.path)  # 返回一个包含PATH的列表，其中第一个为main脚�
 > 可以用 `pyenv install <version>` 来安装不同版本，  
 > 用 `pyenv global <version>` 来设置全局默认的 Python 版本，或使用 `pyenv local <version>` 为项目指定特定版本。
 
-`pyenv install --list`：查看所有可安装版本。
-`pyenv versions`：查看所有可用的python版本。
-`pyenv uninstall <版本号>`：卸载指定版本。
+- `pyenv install --list`：查看所有可安装版本
+- `pyenv install 3.11`
+
+- `pyenv virtualenv 3.11 venv`：创建 venv
+- `pyenv virtualenvs`：列出 venv
+
+- `pyenv versions`：查看所有可用的python版本
+- `pyenv uninstall <版本号>`：卸载指定版本
 
 
 

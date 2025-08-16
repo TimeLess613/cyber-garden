@@ -38,6 +38,11 @@ SPF/DKIM/DMARC 都算是用于**验证发信人的正当性**。
 指定谁（哪些IP）可以代表我（域名）发送邮件。
 别人（收件方）可以来查看发信人域名的清单确认发件人IP是否被授权。
 
+### 应用例子
+
+公司 A（company1.com）需要代表公司 B（company2.com）发送邮件，于是 From 为 `no-replay@company2.com` 的邮件从公司 A 的邮件服务器发出，IP 为 `1.1.1.1`。收件方收到邮件后，检查 From 域名 `company2.com` 的 DNS，确认其中是否允许 `1.1.1.1` 来使用这个 From 发邮件。
+所以如果要正常通过 SPF 检查（SPF alignment，DMARC 规定的一个检查条件），就要让公司 B 在其 DNS 中配置允许公司 A 的 IP。
+
 ### 🧾 简化流程如下
 
 1. **收到一封邮件**，比如来自 `user@example.com`。
