@@ -107,6 +107,7 @@ OAuth 2.0 **使用访问令牌（Access Token）来代表用户的授权**。访
 +--------+                                  +---------------+
 ```
 
+> 服务/应用自己访问资源。在 IdP（如 Azure AD、Entra ID）中注册应用可类比 AD 环境中注册一个 [[SPN]]？
 
 #### 🔑 对比 Authorization Code Flow
 
