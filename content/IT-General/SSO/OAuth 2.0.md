@@ -12,11 +12,14 @@ OAuth 2.0 **使用访问令牌（Access Token）来代表用户的授权**。访
 
 ### 4个角色
 
-- Resource Owner：资源的所有者，**一般是用户**。决定是否让某个应用可以访问自己的资源。
-- Resource Server：资源存放的地方。
 - Client：一般是**某个应用**，来代替用户访问他的资源。
+- Resource Owner：资源的所有者，**一般是用户**。决定是否**授权某个应用**可以访问自己的资源。
+- Resource Server：（用户的）资源存放的地方，**一般是云服务厂商**。
 - Authorization Server：如 Azure、Google等。
 
+**作用方式/应用场景：**  
+- 用户想授权/委派某个应用，让它代替用户去获取某个资源，但是不应该直接把访问某个资源的账号密码给这个应用——所以需要传递某个授权码。
+- 而为了避免用户在多个界面（多个应用&授权服务器）之间来回跳转，OAuth 将跳转流程自动化了（所以配置的时候需要重定向 URL——对于授权码工作流）。
 
 
 ## 3种认证方式
@@ -41,18 +44,26 @@ OAuth 2.0 **使用访问令牌（Access Token）来代表用户的授权**。访
 ### Authorization Code Flow
 
 关键：凭据→授权码→token。
+- 似乎也要提前注册 Client App。
+- 为了防止授权码被盗，获取授权码后，Client 还得带上 `client_id` 和 `client_secret` 以获取令牌（Access Token），之后用令牌才能访问资源。
+	- 本质：为了简单实现重定向，用了 GET 请求传输授权码。之后才用 POST 请求获取 token。
 
 ```
+# 用户在 Client 中打算访问另一应用的资源。Client 请求用户授权，转到另一应用的登陆界面，用户登陆并提供授权范围：
+
  +---------+                               +---------------+
  |         |--(A)- Authorization Request ->|   Resource    |
- |         |                               |     Owner     |
+ |         |                               |    Owner      |
  |         |<-(B)-- Authorization Grant ---|    (User)     |
  |         |     (redirect_uri?code=...)   +---------------+
- |         |
+ |         |                                     |
+ | Client  |                                     | (B) login & get code
+ |         |                                     |
  |         |                               +---------------+
  |         |--(C)-- Authorization Code --->| Authorization |
- | Client  |                               |     Server    |
- |(browser)|<-(D)----- Access Token -------|               |
+ |         |    (client_id&client_secret)  |   Server      |
+ |         |                               |               |
+ |         |<-(D)----- Access Token -------|               |
  |         |                               +---------------+
  |         |
  |         |                               +---------------+
@@ -61,14 +72,14 @@ OAuth 2.0 **使用访问令牌（Access Token）来代表用户的授权**。访
  |         |<-(F)---- Protected Resource --|               |
  +---------+                               +---------------+
  
- A: 客户端向资源所有者（用户）请求授权，并被重定向到授权服务器。（这前面通常是用户访问某App）
- B: 资源所有者同意授权，并将授权授予客户端（通常通过授权码）。
+ A: 客户端向资源所有者（用户）请求授权，并被重定向到授权服务器。
+ B: 用户登陆并同意授权，客户端获得授权码。（之后都是在后端发生）
  C: 客户端使用授权码向授权服务器请求访问令牌。
  D: 授权服务器验证授权码并返回访问令牌。
  E: 客户端使用访问令牌向资源服务器请求受保护的资源。
  F: 资源服务器验证访问令牌并返回受保护的资源数据。
 ```
-- 用户是在授权服务器的页面输入凭据，客户端看不到。
+- **有用户交互**——用户是在授权服务器的页面输入凭据，客户端应用看不到。
 - 支持 MFA、SSO。
 
 ```
@@ -81,6 +92,16 @@ OAuth 2.0 **使用访问令牌（Access Token）来代表用户的授权**。访
 ```
 - 更贴近实际开发中的跳转与回调逻辑
 - Resource Owner 与 Authorization Server 合并为同一系统入口
+
+
+安全措施：关于授权码的防护——state 和 PKCE，可看 b站 BV195Yfz9Ebw。
+
+#### 理解流程的 CTF
+
+> [!note] 根据 [[kazkiti memo#OAUTH-004]] 的经验，请求时有几个编码问题需要注意。
+
+
+
 
 
 ### Client Credentials Flow
@@ -125,7 +146,4 @@ OAuth 2.0 **使用访问令牌（Access Token）来代表用户的授权**。访
 ---
 
 
-
-
-> [!note] 根据 [[kazkiti memo#OAUTH-004]] 的经验，请求时有几个编码问题需要注意。
 

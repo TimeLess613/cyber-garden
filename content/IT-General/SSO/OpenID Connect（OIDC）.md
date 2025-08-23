@@ -3,9 +3,9 @@ tags:
   - IT/认证
 ---
 
-是 [[OAuth 2.0]] 的扩展。仅提供认证信息。
+是 [[OAuth 2.0]] 的扩展。在 OAuth 基础上补齐认证功能。
 
-近年来，集成了 OpenID 和 OAuth2 的 OpenID Connect 标准与 [[SAML]] 一起成为主流。
+近年来，集成了 OpenID 和 OAuth2 的 OpenID Connect 标准与 [[SAML]] 一起成为实现 SSO 的主流。
 优点是比 SAML 更容易实现和操作，并且正在企业服务中获得认可，ADFS 可以同时使用 SAML 和 OIDC。
 
 > OpenID Connect 是建立在 OAuth 2.0 之上的身份验证标准。
