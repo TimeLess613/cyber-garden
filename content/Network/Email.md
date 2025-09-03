@@ -72,7 +72,7 @@ MUA——MSA——MTA——MTA(边界网关)——MTA——MDA—（MailBox）�
 5. `RCPT TO`，验证邮件地址是否存在
 6. `QUIT`命令，关闭TCP连接
 
-
+![[660385d17033213a71c70a7344c18452.jpg]]
 
 
 
