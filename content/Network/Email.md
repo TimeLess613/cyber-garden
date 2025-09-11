@@ -119,16 +119,20 @@ SMTP服务器地址——相当于信封。
 
 
 
-## 关于raw data（MIME数据）
+## 关于 raw data（MIME数据）
 
 ### 报头：Encoded-Word格式
 
-> 邮件标题（Subject）和其他头部字段（如发件人、收件人等）通常使用 **MIME 编码**（如 =?UTF-8?B?...?=。有Base64或Quoted-Printable）来处理特殊字符或非 ASCII 字符。**这种编码方式被称为“Encoded-Word”格式**，定义在 MIME（多用途互联网邮件扩展）标准中。
-> Encoded-Word 格式允许邮件头部字段包含非 ASCII 字符，如中文、日文、韩文等字符。这种格式通常以 =?charset?encoding?encoded text?= 的形式出现，其中：
-> - charset 是字符集，如 UTF-8、ISO-8859-1 等。
-> - encoding 是编码方式，通常是 B （表示 base64 编码）或 Q （表示 quoted-printable 编码）。
-> 	- 等号（“=”）用作称为“引用打印（Quoted-printabl）”的编码机制的一部分。是一种用于以主要为电子邮件设计的文本格式表示不可打印或特殊字符的方法。
-> - encoded text 是按照指定的字符集和编码方式编码后的文本。
+- 由于历史原因，邮件头仅能使用 7bit ASCII 字符，若邮件标题（Subject）和其他报头字段（如 From、To 等）包含非 ASCII 字符（中文、日文、韩文等），则需要特殊编码。
+- MIME 标准（RFC 2047）定义了 **Encoded-Word 格式**，用于在头部安全地传递这些字符。
+
+这种格式通常以 `=?charset?encoding?encoded text?=` 的形式出现，其中：
+- `=?` `?=` 为 Encoded-Word 的边界符。
+- **charset**：字符集（如 `UTF-8`、`ISO-8859-1`）。
+- **encoding**：编码方式
+    - `B`：Base64。适合非拉丁文字，因为这些语言在 UTF-8 下每个字符都不是 ASCII，`Q` 编码会膨胀得很厉害。
+    - `Q`：Quoted-Printable。类似 URL 编码，把非 ASCII 字节写成 `=XX` (16进制)，空格写成 `_`。可读性较好，适合特殊字符少的文本。
+- **encoded-text**：按照指定字符集与编码方式得到的文本。
 
 
 > 在 Python 中，使用 `email.header.decode_header()` 函数时，通常不需要指定编码格式。`decode_header()` 函数的目的是解码邮件头部字段中的 MIME 编码（Encoded-Word）文本，它会自动处理编码和字符集的识别。 #IT/Python 
