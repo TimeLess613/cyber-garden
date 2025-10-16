@@ -5,6 +5,7 @@ tags:
 ---
 
 > [[Linux命令#iptables]]
+> [[Netfilter#5表5链]]
 
 
 ### 背景
@@ -104,26 +105,7 @@ sudo iptables -t nat -A POSTROUTING -o enumad -s 10.10.10.20 -j MASQUERADE
 
 #### ✅ Linux 转发流程核心链路图
 
-```
-数据包进入
-    |
-    v
-[ PREROUTING ]  ← 做 DNAT（目标地址转换）
-    |
-    v
-[ 路由判断 ]
-    |
-    +--> 是发给本机 → [ INPUT ] → 本地服务
-    |
-    +--> 是转发流量 → [ FORWARD ]
-							|
-							v
-					   [ POSTROUTING ]  ← 做 SNAT/MASQUERADE（源地址转换）
-							|
-							v
-	                    发出系统
-```
-
+![[Netfilter#五条链的宏观顺序]]
 
 #### ✅ 如何知道原始的目标地址？
 

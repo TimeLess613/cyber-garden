@@ -847,25 +847,11 @@ sudo service iptables save
 ![[iptables 转发实践#其他命令]]
 
 
+[[Netfilter#5表5链]]
+[[iptables 转发实践#扩展知识]]
+
+
 ---
-
-**（Netfilter5表5链）**
-
-| 表 名称         | 作用简介                                | 默认链                                             |
-| ------------ | ----------------------------------- | ----------------------------------------------- |
-| **filter**   | 做数据包过滤，决定 ACCEPT / DROP / REJECT    | INPUT, FORWARD, OUTPUT                          |
-| **nat**      | 网络地址转换，用于新建连接的源/目的地址重写              | PREROUTING, OUTPUT, POSTROUTING                 |
-| **mangle**   | 对数据包做深度修改（如 TOS、TTL、打标记等）           | PREROUTING, INPUT, FORWARD, OUTPUT, POSTROUTING |
-| **raw**      | 在 conntrack 前对包做特殊处理（如关闭跟踪 NOTRACK） | PREROUTING, OUTPUT                              |
-| **security** | 与 SELinux/AppArmor 等安全模块集成，做额外访问检查  | INPUT, FORWARD, OUTPUT                          |
-
-> [!note] OCI 公开服务器端口时，除了配置 VCN 子网入站规则，还需要在服务器中配置 FW 放行
-
-理解：
-![[Pasted image 20240311165707.png]]
-
-
-![[iptables 转发实践#扩展知识]]
 
 
 ### firewalld
