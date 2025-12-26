@@ -65,9 +65,14 @@ class APIRequest:
 * 不指定默认值的话就必须传参！——所以统一习惯，有默认值的都指定上。
 
 ## pip 代理
+
 - `pip install packagename --proxy="http://[user:password@]server:port"`
 - 用CA bundle方法：`--cert=`（**cert可能需要放在自己的用户目录下**）
 - 没配置 pip 的 path 的话，会导致导包需要用 `python -m pip install`
+
+#踩坑 
+> [!note] 有时候 `--proxy` 不管用，当指定 proxy 与环境变量的配置不一样时，最终可能受环境变量影响。
+
 
 
 ## [Magic comment](https://qiita.com/KEINOS/items/6efc1147b917d7811b5b)——脚本开头预定义的编码
