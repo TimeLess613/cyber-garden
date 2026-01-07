@@ -71,7 +71,7 @@ class APIRequest:
 - 没配置 pip 的 path 的话，会导致导包需要用 `python -m pip install`
 
 #踩坑 
-> [!note] 有时候 `--proxy` 不管用，当指定 proxy 与环境变量的配置不一样时，最终可能受环境变量影响。
+> [!note] 有时候 `--proxy` 不管用。比如当指定 proxy 与环境变量的配置不一样时，最终可能受环境变量影响（解决：`export https_proxy`，不行的话再试试大写变量）。
 
 
 
