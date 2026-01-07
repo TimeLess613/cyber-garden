@@ -22,6 +22,8 @@ tags:
 ## 环境变量
 
 - `env`：显示环境变量
+	- 作用于当前命令的临时环境变量：`env VAR=value <command>`
+		- 区别于 `export` 的作用域
 - `set`：显示环境变量和shell变量
 - `export VAR=value`：定义变量并标记为环境变量
 	- 单纯的定义变量就是直接赋值：`VAR=value`
